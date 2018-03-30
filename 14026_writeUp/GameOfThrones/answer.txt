@@ -1,0 +1,10 @@
+When I executed the the given binary in GDB and used a very long string of random characters as argv[1], in the function <crows()> when the control returned back after executing <wildlings(argv[1]);>, the 4 bytes of <ptr> and 4 bytes of <var> were overwritten by some part of my input string.
+After some time time I realized that if I construct my argv[1] in such a way that after returning from function <wildlings()>, the ptr points at GOT entry of function <_exit()> and <var> stores the value of function <read_flag()>, then, when the line <*ptr = var;> will be is executed, it will overwrite the GOT entry of function <exit()> with the address of function <read_flag()>.
+GOT entry address of <_exit>: <0x804a010>
+Address of function <get_flag()>: <0x080485ad>
+Buffer size of <buf>: 208
+When I executed the given binary in GDB, and gave he following string as argv[1]:
+`python -c 'print "A"*125+"\xad\x85\x04\x08\x10\xa0\x04\x08"+"A"*84)'`
+it showed an error in <cat flag.txt> which meant that our exploit worked. But when I used the same exploit string from outside string, core was dumped. This happened because I GDb alters addresses by plcing its debug information on stack. So, I wrote a script <exploit.sh> which bruteforced through all such possible exploit string, one of the exploit string worked and printed the flag.
+
+

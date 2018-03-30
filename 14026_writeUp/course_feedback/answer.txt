@@ -1,0 +1,15 @@
+After examining the objdump of given binary, I realized that inside the function <enterName()>, there was a call to <printf()> whose the argument was the string stored in <format>(which is entered by used when prompted with "Enter your name here: "). This was a format sring vulnerability. Using this, we can modify the GOT entry address of <puts()>(present inside the function feedSubmission()) to the address of <system()>(calculated using GDB). This way when there would be a call to function <puts()>, the function that would be called is <system()>.
+I constructed the following command to do this:
+
+python -c 'import struct; print "__"+struct.pack("<I",0x0804a024)+struct.pack("<I",0x0804a026)+"CCCC"+"%7$14642x"+"%7$n"+"%8$48804x"+"%8$n"' > tmp
+
+The above format string overrites the adddress of GOT entry of <puts()> with the address of <system()> in to parts. Lower 2 bytes are written first followed by upper 2 bytes. Same methodology of problemm <S10rM> is followed(refer to it for details)
+
+Now, the argument of <puts()> is <Thank You>. I needed to change it to <cat flag.txt>. I did it by:
+i. Copying the directory </bin> to current directory <buggy_coder-2> using <cp -r /bin ./>.
+ii. Renaming the binary <cat> to <Thank> using <mv bin/cat bin/Thank>.
+iii. Appending </home/abhivm/ctf2/course_feedback/bin> in front of <PATH> variable using <export PATH="/home/abhivm/ctf2/buggy_coder-2/bin:$PATH">.
+iv. Created a symlink from <flag.txt> to <You> using <ln -s /home/abhivm/ctf2/course_feedback/flag.txt You>.
+
+So, first, I changed <Thank You> to <cat flag.txt> and then executed the binary by using the above mentioned command.
+This printed the flag on stdout.

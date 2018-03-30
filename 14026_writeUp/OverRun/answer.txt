@@ -1,0 +1,5 @@
+In the function <vuln()>, when <strcpy(buf, input);> command is executed, it can lead to a buffer overflow. Here, <input> is argv[2]. I found the size of <buf> buffer which was 31. So, I needed to pad my argv[2] with 35 random characters(31 + 4 for overwriting ebp) and then modify the return addres of the function <vuln()> to the address of function <give_shell()>. I found the address of function <give_shell()> using objdump. It came out to be <\x81\x85\x04\x08>. Now, function <give_shell()> executes <system(arr)>. Here, arr contains argv[1]. So, I needed to pass argv[1] as <sh> to get the shell. I used the following commands as exploits:
+export HACK=`python -c 'print "sh "+"A"*35+"\x81\x85\x04\x08"'`
+./OverRun $HACK
+Running this gave me shell with privilages required to open <flag.txt>.
+I used <cat flag.txt> to print the flag. 

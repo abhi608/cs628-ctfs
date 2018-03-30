@@ -1,0 +1,8 @@
+After examinning the objdump of given binary, I came to know that the first thing this binary did was opening a file named <password>. So, I created a blank file <password> in the directory <buggy_coder-2> using:
+touch password
+After this, it read some bytes from input. After going through objdump of the given binary, I realized that the binary comapres the string entered by us(after sleep() returned) with <0x75630590> after applying the function <atoi()> on it. So, I converted this value to decimal form which was <1969423760>. We need to enter this value(after return() returned). Since this value would be treated as a string, I enter number of bytes to be read as <10>(because "1969423760" has 10 characters). Doing all this resulted in printing of directory contents. This was because of a <system("ls")> call. From now onwards, it was easy. I just needed to replace the binary of <ls> with <sh> and this would give us shell. I did it by:
+i. Copying the directory </bin> to current directory <buggy_coder-2> using <cp -r /bin ./>.
+ii. Deleting the binary corresponding to <ls> in the new <bin> and renamed the binary <sh> to <ls> using <rm bin/ls; mv bin/sh bin/ls>.
+iii. Appending </home/abhivm/ctf2/buggy_coder-2/bin> in front of <PATH> variable using <export PATH="/home/abhivm/ctf2/buggy_coder-2/bin:$PATH">.
+
+I got the shell with the privilages required to open <flag.txt>. I did the same by using <cat flag.txt>.

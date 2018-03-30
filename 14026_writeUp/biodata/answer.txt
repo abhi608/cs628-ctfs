@@ -1,0 +1,9 @@
+Inside all of the <case> statements, there is a line <scanf("%s",info);> which accepts a string as input and writes to <info> buffer. Using GDB, I came to know know that stack was marked non-executable. If we overwrite the return address of the function <biodata> with the address of <system()> and pass <cat flag.txt> as argiment ot it, we can get the flag. I used the following exploit commands to get the flag:
+export TRY="cat flag.txt"
+echo `python -c 'import os; import struct; print "A"*37+struct.pack("<I",0xf7e43940)+struct.pack("<I",0xf7e377b0)+struct.pack("<I",0xffffdf23)'` | ./biodata
+
+Explanation:
+i. objdump of <biodata()> shoed that the diiference between <ebp> and the base of buffer of <info> is 33. So, (33+4=37) A's overwrite the ebp entry on the stack.
+ii. <struct.pack("<I",0xf7e43940)> overwrites the return address of the function <biodata()> with the address of <system()>(which I found out using GDB).
+iii. <struct.pack("<I",0xf7e377b0)> writes the address of <exit()>(found out using GDB) at next 4 bytes. thi helps in clean exit of code.
+iv. Now, I needed to pass address of string <cat flag.txt> in the next 4 bytes. Since the string has space in it, we can't pass it in the exploit string itself. So, I used environment vriable to accomplish this. i set the environment variable <TRY> to <cat flag.txt> using <export TRY="cat flag.txt">, found out the address of this string in GDB nd passed that address as next 4 bytes using <struct.pack("<I",0xffffdf23)>. Note: The address of the string <cat flag.txt> which worked in real was actually slightly different compared to the address shown in GDB(GDB alters the stack address because it places debug info on stack). I found the coorect address using trial and error.	

@@ -1,0 +1,7 @@
+In this question, the first part was to guess the random number. By executing the given binary in GDB, I found out that the number which we had to guess was not a random number, it was constant each time. This is because this random number is generated using the statement <srand(seed)> and in this case, value of seed is fixed. The number was <1585910786>.
+In the second part, I made use of filename wwhich was to be entered when binary was executed. If the random number was successfully guessed(which was actually guessed correctly), the function <file_size_utility()> was executed. Inside this function, a call to the function <system()> was made. The argument of this call were <du -h '%s' 2> /dev/null> where <%s> is the string entered by us. So, we had to somehow pass such a filename which would execute </bin/sh>. Also, we had to care that the argument to the shell command <du -h> should be a valid file. I entered </bin/sh';/bin/sh;'> string as filename.
+Explanation:
+i. The argument to <du -h> would be now </bin/sh> which is a valid file. So, this constraint is satisfied.
+ii. The argument to system call <system()> is <du -h '/bin/sh';/bin/sh;'' 2> /dev/null>. So, <;> works as a separator between different commands. Also, <''> are balanced. So, this constarint is also satisfied. So, <du -h '/bin/sh'> will be executed first followed by '/bin/sh' which will give as shell.
+
+So, I got a shell with privilages required to open <flag.txt> and I used <cat flag.txt> to print the content of <flag.txt>.

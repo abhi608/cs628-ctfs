@@ -1,0 +1,6 @@
+The C program was already given. So, I did the following:
+i. Since, getenv("USER")=abhivm in my case, so I initialized environmrnet variable <abhivm> to <test> using:
+	export abhivm="test"
+ii. Initailized environmrnet variable <HACK> to <cat flag.txt> using:
+	export HACK="cat test.txt"
+iii. Executed the binary which printed the flag on stdout.

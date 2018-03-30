@@ -1,0 +1,12 @@
+There is a format string vulnerability in the function <vuln()> in the line <printf(buffer);>. If we can overwrite the address of the function <exit()> with the address of function <hello()>, it will print the content of <flag.txt>. So, I followed the approach which we generally follow in format string vulnerebility. I did the following:
+i. Checked where my input was being placed in the flag by using the following command:
+echo AAAA%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x. | ./S10rM
+This printed the following on stdout:
+AAAA00000252.f7fb95a0.00000001.f7ffd53c.00000000.f7fe92ea.41410000.30254141.252e7838.2e783830.78383025.
+which means that my input is repeating at position 7 but it's not perfectly aligned. So, I'll need to pad my format string with to random characters.
+ii. Checked the address of exit() GOT table entry using <objdump>. It was <\x28\xa0\x04\x08>. I needed to overrite this with <0x0804858b> which is the address of <hello()> function. 
+iii. Finally, I used the following command to exploit this:
+echo `python -c 'print "AA\x28\xa0\x04\x08AAAAAAA%34174x%8$hn"'` | ./S10rM
+This format string travels to 8th position from bottom and writes <0x858b> at the to higher bytes of <\x28\xa0\x04\x08>. 
+iv. This displayed the flag which was a brainfuck code(didn't took time to realize that it was brainfuck as I had already played with brainfuck sometime before).
+v. Executed the brainfuck code which gave the flag.
