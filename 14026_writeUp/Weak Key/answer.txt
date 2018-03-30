@@ -1,0 +1,12 @@
+When I ran the command
+
+<nc cseproj91.cse.iitk.ac.in 8030>
+
+it showed a phrase "Only single DES with PKCS5 padding", which basically talks about DES and PKCS5. When I opened the <flag.txt> on the ssh server, it had a gibberish text which seemed like an encoded text. Thus, the target was to decode the content of <flag.txt>. SO, then I read about DES from wikipedia(<https://en.wikipedia.org/wiki/Data_Encryption_Standard>) after which I came to know that a 64-bit key is needed to decode the text. But, then for a normal key, there was no other way than brute-force. But it would have taken days. So, then i read the problem statement once again and this time I focussed on the weak key thing. So, I googled weak keys for DES and I found a link (<https://crypto.stackexchange.com/questions/12214/can-you-explain-weak-keys-for-des>) from which I came to know that there are 48 "possibly weak keys" for which the bit patterns have period of 4, and which thus generate only four distinct round subkeys. Following are the 4 possible keys:
+	0x0101010101010101
+	0xFEFEFEFEFEFEFEFE
+	0xE0E0E0E0F1F1F1F1
+	0x1F1F1F1F0E0E0E0E
+
+
+I tried testing these keys on some of the encrypted texts from netcat server. The third key worked. On decrypting the contents of <flag.txt> with <0xE0E0E0E0F1F1F1F1>, I got a flag.

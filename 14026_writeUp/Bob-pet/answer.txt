@@ -1,0 +1,9 @@
+As in the question "3_syfur", in this question also, we need to call the function <getFlag()> which prints the flag. When the given binary was run in gdb, the code inside the <main()> function was found executing a command 
+
+<call eax> where eax contained the address of <lose()> function. This value was moved into eax by using the command:
+
+<mov eax,DWORD PTR [ebp-0xc]>
+
+So, all we need to do was to change the value stored at memory address <ebp-0xc>. After carefully observing all addresses in gdb, the difference between the memory addresses where input was stored and the memory address of <ebp-0xc> was 33(in decimal). So, if my input was 33 random bytes followed by <0x804856b>(address of <getFlag()> function) in little endian format, flag would be displayed. Finally, I ran the following command which displayed the flag:
+
+echo `python -c 'print("A"*33+"\x6b\x85\x04\x08")'` | ./bob-pet

@@ -1,0 +1,7 @@
+Penalty under the Indian IT Act, 2000 for:
+
+1. "Hacking with computer system" : Imprisonment up to three years, or/and with fine up to ₹500,000
+
+2. "Securing access or attempting to secure access to a protected system" : Imprisonment up to ten years, or/and with fine.
+
+Source - https://en.wikipedia.org/wiki/Information_Technology_Act,_2000

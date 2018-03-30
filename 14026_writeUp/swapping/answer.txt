@@ -1,0 +1,6 @@
+When I dumped the assembly code of the given binary using the command:
+
+<objdump -M intel -D swapping>
+
+I realized that function <getFlag()> needed to be called for reading the file and displaying the flag.
+When I ran the binary using gdb, I found ou that the input from user was being comapred with <0x7cdd>. If input from the user was equal to <0x7cdd>, it would lead to the function call of <getFlag()>. So, I converted <0x7cdd> to decimal <31965>  and then ran the binary normally and entered the above decimal number when prompted for password. It worked and flag was displayed.

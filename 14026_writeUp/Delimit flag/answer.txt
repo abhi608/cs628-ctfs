@@ -1,0 +1,3 @@
+The given file clearly contained morse code. On converting it to ASCII and then converting ASCII to string gave me flag in the form of 
+<ctst6t2t8tat{tct4t8tct5tetetbt1tctctftbtat8tbt0t2t7t3t0t9t5tbtet5t9tat0t3tdt4t}t>
+which is a modified flag. As is easily visible, every alternating character is t which in ASCII is 628(course code). So, this time I removed all alternating 628 from the ASCII ans converted it to string. It was the desired flag.

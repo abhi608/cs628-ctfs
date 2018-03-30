@@ -1,0 +1,3 @@
+On running the binary <forgot-pass> with ltrace using the command:
+<ltrace ./forgot-pass>
+the binary promted me for an input. I entered a random string. After that, ltarce showed me that just after taking the input, it compares the input with "doxxvHalDeVTzilY" using <strcmp("ddd", "doxxvHalDeVTzilY")>. So, I gave "doxxvHalDeVTzilY" as input to the original program, and it displayed the flag. 

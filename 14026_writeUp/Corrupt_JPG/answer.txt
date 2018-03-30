@@ -1,0 +1,10 @@
+When I compared first 4 bytes of the corrupted image with the JPG image signature using the command
+
+<xxd -l4 flag.jpg>
+
+it showed \x89\x50\x4e\x47 as first 4 bits which is invalid for jpg image.
+So, I just changed the first 4 bytes to \xff\xd8\xff\xe0 (which is a valid signature for jpg image, read it from https://en.wikipedia.org/wiki/List_of_file_signatures) using the following command:
+
+<printf '\xff\xd8\xff\xe0' | dd of=flag.jpg bs=1 seek=0 conv=notrunc>
+
+The image was recovered and it displayed the flag.

@@ -1,0 +1,11 @@
+When I dumped the assembly code of the given binary using the command:
+
+<objdump -M intel -D buggy>
+
+I realized that function <fun()> needed to be called for reading the file and displaying the flag.
+When I ran the binary using gdb, I found ou that the input from user was being stored at the address <0xffffdb47> and after that there was a command <cmpl $0x0,-0xc(%ebp)> which basically compares the value at the address ebp-0xc and 0x0. In gdb, I found out the address "ebp-0xc" is <0xffffdbba>. The diffrence between <0xffffdb47> and <0xffffdbba> is 117 bytes. This meant that if I gave a random string of length 118 bytes as input to the binary file, the comparison statement would result in not equal condition and thus function <fun()> would be executed.
+The command I ran was:
+
+<perl -e 'print "A" x 118' | ./buggy>
+
+This displayed the flag.

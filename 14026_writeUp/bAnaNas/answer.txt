@@ -1,0 +1,5 @@
+This problem was based on integer overflow. When i ran the binary in gdb, i realized that some operations were performed on input number and the resulting value was being compared to <0x4>. If input is "y", then 10*y was being compared to <0x4> and if the result was equal, then a function call was made to <getFlag()> function which read the file <flag.txt> and displayed the flag. This meant that either y needed to be equal to 0.4 which is not possible. So, I thought in the direction of integer overflow. If somehow I managed to make the value of 10*y equal to <0x100000004>, it would be a case of integer overflow and that value will be treated as <0x4>. So,
+10*y = 0x100000004 = 4294967300 in decimal
+therefore, y = 429496730 in decimal.
+
+Then I executed the given binary and entered <429496730> when promted for input. It worked and displayed the flag.
