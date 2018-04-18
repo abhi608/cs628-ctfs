@@ -1,0 +1,2 @@
+After trying some stegno tools(like pngcheck, hexdump), I opened up the hex dump of the gien imge. I found the header of another image inside it. This gave me a clue that this file has an image hidden inside it. I extracted the lower bits of the hidden image and when opened it in an image viewer, it had a flag inside it.
+

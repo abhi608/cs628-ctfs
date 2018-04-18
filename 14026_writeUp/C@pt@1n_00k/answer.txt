@@ -1,0 +1,6 @@
+Since enough info was given about the password, I bruteforced it starting from Jan'1900 to Jan'2200. I found my password. The script I used was <try_captain.py>. Then I got a photo upload portal. In the POST request, there was a cookie which was storing session id. After hit and trial, I found that my session ID was the md5 hash of my username in reverse. So, I found md5 hash of <nimda>()reverse of admin and set the cookie to:
+
+session Id: md5('nimda')
+user: admin
+
+and refreshed the page. It logged me into the admin account. The <upload> tab of the admin asked for an answer to a secret question. Its hint was present in the images of admin in which one of the image showed mango with <THINK DEEPER>. The answer was 'alphonso'(a mango variety). This landed me up to an HTML page. When did selected the content of the html page using <Ctrl+A>, I realied that it had <whitespace> code in it. I executed the code online and it gave me the flag.

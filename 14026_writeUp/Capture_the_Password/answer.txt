@@ -1,0 +1,1 @@
+There was a dump file on the google drive. I downloaded the file and ran the <strings> command on this file and found the flag. 

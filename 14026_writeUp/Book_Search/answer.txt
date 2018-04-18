@@ -1,0 +1,9 @@
+I logged into the portal using my credentials. there was a book search interface there. Initially, I tried some basic SQL injection and got to know that the interface was vulnerable to SQL injections. Then I passed a SQL injection which dumbed the Column names of the table. Two of them were: <author> and <title>. Then I tried searching for the flag in <author> column, using the following SQL injection:
+
+<x' OR author LIKE 'cs628%>
+
+It showed me that it found a book. So, I wrote a script to discover the flag. But I didn' get any success. So, I tried the same query on <title> column:
+
+<x' OR title LIKE 'cs628%>
+
+and got success. Then I ran the script and I got the flag(I used the knowledge that flag is of the form: <cs628a{32 characters amongst [a-f0-9]}>). This speeded up my script. Script file name is <book.py>.

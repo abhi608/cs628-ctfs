@@ -1,0 +1,17 @@
+When I saw the objdump of the given binary, I found a function <memcpy()> being called at a place. <memcpy()> was reading from argv and copying to a buffer. SO, this was a buffer overflow vulnerebility. This is when I realized that there was also a check in place hich placed an upper limit on the length(number of bytes) to be copied. But this check was on <signed int>. This check can be fooled by passing a large <unsigned int>(integer overflow). Also, even if do a normal buffer overflow, we won't be able to overwrite the return adress of <farthest> function bacause in the last of the function, <eip> is being restored from <ecx-4>. So, I wrote he following exploit:
+
+./Guess `python -c 'import struct; import os; print "2147484374," + "<address of read_flag()><address of exit()>" + "a"*11600 + <address of the buffer + 4>'`
+
+Explanation: 
+1. 2147484374 is selected such that after integer overflow, the value thta is passed as the last argument(number of bytes to be copied) should be equal to buffer size. 
+
+2. <address of read_flag()> is the new return address of the <farthest()> function.
+
+3. <address of exit()> is for the clean exit of the program, i.e., to prevent core from being dumped.
+
+4. "a"*11600 is for filling the buffer.
+
+5. <address of the buffer + 4> is the adress of the place(+4) here we hve stored the address of <read_flag()>. <+4> because value is loaded from <ecx-4> to <eip>. So if <ecx> = <address of buffer + 4>, then, <ecx-4> = <address of buffer>
+
+Also, the command being executed in the read_flag() was <du>, so I copied </bin> to <Guess> directory and renamed the binary of <cat> to <du> and this this new <bin> to the front of <PATH> variablr. When I ran the exploit on on GDB, <read_flag()> was executed successfully. But outside GDB, it failed because the <address of the buffer> wasn't same. Then I wrote a script <exploit.sh> which bruteforced the <address of buffer> and got the flag.
+
